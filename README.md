@@ -1,5 +1,2 @@
-# pensjon-ekstern-api
-
-Swagger dokumentasjon på tjenester pensjon eksponerer:
-
-https://navikt.github.io/pensjon-ekstern-api/
+# pensjon-tpo-dok
+Dokumentasjon for samhandling med tjenestepensjonsordninger (feks API spec)
