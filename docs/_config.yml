@@ -18,10 +18,10 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 
-title: PO-Pensjon Ekstern API
+title: Offentlig Tjenestepensjon API
 description: >- # this means to ignore newlines until "baseurl:"
-  Beskrivelse av eksterne API eksponert av PO-pensjon
-baseurl: "/pensjon-ekstern-api" # the subpath of your site, e.g. /blog
+  Dokumentasjon av APIer som skal tilbys av tjenestepensjonsordninger
+baseurl: "/pensjon-tpo-dok" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
 
 # Build settings
