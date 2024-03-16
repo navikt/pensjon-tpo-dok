@@ -1,0 +1,128 @@
+openapi: 3.0.1
+info:
+  title: Offentlig Tjenestepensjon AP2025
+  description: Inneholder tjenester relatert til offentlig tjenestepensjon for personer født fra og med 1963. Produsent av tjenestene er tjenestepensjonsordninger som SPK, KLP osv.
+  version: 1.0.0
+servers:
+  - url: https://template.value/template/value
+paths:
+  /api/v1/tjenestepensjon/simuler:
+    post:
+      summary: Simuler offentlig tjenestepensjon
+      description: Simulerer offentlig tjenestepensjon for brukere født fra og med 1963
+      operationId: simuler
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SimulerTjenestepensjonSpecV1'
+        required: true
+      responses:
+        "200":
+          description: Simulering av offentlig tjenestepensjon utført
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/SimulerTjenestepensjonResultV1'
+
+components:
+  schemas:
+
+    SimulerTjenestepensjonSpecV1:
+      type: object
+      properties:
+        personId:
+          type: string
+        uttaksListe:
+          type: array
+          items:
+            $ref: '#/components/schemas/SimulerTjenestepensjonUttakSpecV1'
+        fremtidigInntektListe:
+          type: array
+          items:
+            $ref: '#/components/schemas/SimulerTjenestePensjonInntektSpecV1'
+        arIUtlandetEtter16:
+          type: integer
+          format: int32
+        epsPensjon:
+          type: boolean
+        eps2G:
+          type: boolean
+
+    SimulerTjenestepensjonUttakSpecV1:
+      type: object
+      properties:
+        ytelseType:
+          $ref: '#/components/schemas/SimulerTjenestepensjonYtelseTypeV1'
+        fraOgMedDato:
+          type: string
+          format: date
+        uttaksgrad:
+          type: integer
+          format: int32
+
+    SimulerTjenestePensjonInntektSpecV1:
+      type: object
+      properties:
+        arligInntekt:
+          type: integer
+          format: int32
+        fraOgMedDato:
+          type: string
+          format: date
+
+    SimulerTjenestepensjonResultV1:
+      type: object
+      properties:
+        inkludertOrdningListe:
+          type: array
+          items:
+            $ref: '#/components/schemas/SimulerTjenestepensjonInkludertOrdningV1'
+        utbetalingListe:
+          type: array
+          items:
+            $ref: '#/components/schemas/SimulerTjenestepensjonUtbetalingV1'
+        arsakIngenUtbetaling:
+          type: array
+          items:
+            $ref: '#/components/schemas/SimulerTjenestepensjonStatusV1'
+
+    SimulerTjenestepensjonInkludertOrdningV1:
+      type: object
+      properties:
+        tpnr:
+          type: string
+
+    SimulerTjenestepensjonUtbetalingV1:
+      type: object
+      properties:
+        fraOgMedDato:
+          type: string
+          format: date
+        arligUtbetaling:
+          type: integer
+          format: int32
+        manedligUtbetaling:
+          type: integer
+          format: int32
+        ytelseType:
+          $ref: '#/components/schemas/SimulerTjenestepensjonYtelseTypeV1'
+
+    SimulerTjenestepensjonStatusV1:
+      type: object
+      properties:
+        statusKode:
+          type: string
+        statusBeskrivelse:
+          type: string
+        ytelseType:
+            $ref: '#/components/schemas/SimulerTjenestepensjonYtelseTypeV1'
+
+    SimulerTjenestepensjonYtelseTypeV1:
+      type: string
+      enum:
+        - AFP
+        - PAASLAG
+        - APOF2020
+
+
