@@ -42,11 +42,14 @@ components:
           items:
             $ref: '#/components/schemas/SimulerTjenestePensjonInntektSpecV1'
         arIUtlandetEtter16:
+          description: Antall år i utlandet etter 16, skal brukes for å kunne kalle tilbake til NAV for å få simulert folketrygdbeholdning for beregning av APOF2020
           type: integer
           format: int32
         epsPensjon:
+          description: Om ektefelle/partner/samboer har alderspensjon, skal brukes for å kunne kalle tilbake til NAV for å få simulert folketrygdbeholdning for beregning av APOF2020
           type: boolean
         eps2G:
+          description: Om ektefelle/partner/samboer har pensjonsgivende inntekt over 2G, skal brukes for å kunne kalle tilbake til NAV for å få simulert folketrygdbeholdning for beregning av APOF2020
           type: boolean
 
     SimulerTjenestepensjonUttakSpecV1:
