@@ -121,8 +121,17 @@ components:
     SimulerTjenestepensjonYtelseTypeV1:
       type: string
       enum:
+        - ALDER
+        - SAERALDER
         - AFP
+        - UFORE
+        - GJENLEVENDE
+        - BARN
         - PAASLAG
         - APOF2020
+        - BTP
+        - OAFP
+        - OT6370
+        - SAERALDERSPAASLAG
 
 
