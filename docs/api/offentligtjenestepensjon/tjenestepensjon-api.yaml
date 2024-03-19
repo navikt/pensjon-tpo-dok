@@ -16,6 +16,49 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/SimulerTjenestepensjonSpecV1'
+            examples:
+              Simuler AFP:
+                value:
+                  {
+                    "personId": "01016312345",
+                    "uttaksListe": [
+                      {
+                        "ytelseType": "AFP",
+                        "fraOgMedDato": "2026-01-01",
+                        "uttaksgrad": null
+                      }
+                    ],
+                    "fremtidigInntektListe": [
+                      {
+                        "arligInntekt": 700000,
+                        "fraOgMedDato": "2022-01-01"
+                      }
+                    ],
+                    "arIUtlandetEtter16": 0,
+                    "epsPensjon": true,
+                    "eps2G": true
+                  }
+              Simuler ALLE:
+                value:
+                  {
+                    "personId": "01016312345",
+                    "uttaksListe": [
+                      {
+                        "ytelseType": "ALLE",
+                        "fraOgMedDato": "2026-01-01",
+                        "uttaksgrad": null
+                      }
+                    ],
+                    "fremtidigInntektListe": [
+                      {
+                        "arligInntekt": 700000,
+                        "fraOgMedDato": "2022-01-01"
+                      }
+                    ],
+                    "arIUtlandetEtter16": 0,
+                    "epsPensjon": true,
+                    "eps2G": true
+                  }
         required: true
       responses:
         "200":
@@ -24,6 +67,55 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/SimulerTjenestepensjonResultV1'
+              examples:
+                Kun AFP Simulert:
+                  value:
+                    {
+                      "inkludertOrdningListe": [
+                        {
+                          "tpnr": "3020"
+                        }
+                      ],
+                      "utbetalingListe": [
+                        {
+                          "fraOgMedDato": "2026-01-01",
+                          "arligUtbetaling": 60000,
+                          "manedligUtbetaling": 5000,
+                          "ytelseType": "AFP"
+                        }
+                      ],
+                      "arsakIngenUtbetaling": null
+                    }
+                PAASLAG og APOF2020 simulert, ikke rett til AFP:
+                  value:
+                    {
+                      "inkludertOrdningListe": [
+                        {
+                          "tpnr": "3020"
+                        }
+                      ],
+                      "utbetalingListe": [
+                        {
+                          "fraOgMedDato": "2026-01-01",
+                          "arligUtbetaling": 12000,
+                          "manedligUtbetaling": 1000,
+                          "ytelseType": "PAASLAG"
+                        },
+                        {
+                          "fraOgMedDato": "2026-01-01",
+                          "arligUtbetaling": 120000,
+                          "manedligUtbetaling": 10000,
+                          "ytelseType": "APOF2020"
+                        }
+                      ],
+                      "arsakIngenUtbetaling": [
+                        {
+                          "statusKode": "7_AV_9_AAR_IKKE_OPPFYLT",
+                          "statusBeskrivelse": "Bruker har ikke jobbet i AFP-bedrift minst 7 av de siste 9 år før 62 år",
+                          "ytelseType": "AFP"
+                        }
+                      ]
+                    }
 
 components:
   schemas:
@@ -44,6 +136,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SimulerTjenestepensjonUttakSpecV1'
+          example:
+
         fremtidigInntektListe:
           description: Liste over brukerangitt forventet inntekt som typisk skal brukes i kall tilbake til NAV for å hente simulert AFP-beholdnning-grunnlag (for beregning av simulert AFP) og simulert folketrygdbeholdning (for beregning av APOF2020)
           type: array

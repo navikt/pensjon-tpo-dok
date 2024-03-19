@@ -1,0 +1,16 @@
+{
+  "inkludertOrdningListe": [
+    {
+      "tpnr": "3020"
+    }
+  ],
+  "utbetalingListe": [
+    {
+      "fraOgMedDato": "2026-01-01",
+      "arligUtbetaling": 60000,
+      "manedligUtbetaling": 5000,
+      "ytelseType": "AFP"
+    }
+  ],
+  "arsakIngenUtbetaling": null
+}
