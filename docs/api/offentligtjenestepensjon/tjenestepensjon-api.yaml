@@ -29,6 +29,7 @@ components:
   schemas:
 
     SimulerTjenestepensjonSpecV1:
+      description: Input til tjenesten
       type: object
       required:
         - personId
@@ -44,6 +45,7 @@ components:
           items:
             $ref: '#/components/schemas/SimulerTjenestepensjonUttakSpecV1'
         fremtidigInntektListe:
+          description: Liste over brukerangitt forventet inntekt som typisk skal brukes i kall tilbake til NAV for å hente simulert AFP-beholdnning-grunnlag (for beregning av simulert AFP) og simulert folketrygdbeholdning (for beregning av APOF2020)
           type: array
           items:
             $ref: '#/components/schemas/SimulerTjenestePensjonInntektSpecV1'
@@ -59,6 +61,7 @@ components:
           type: boolean
 
     SimulerTjenestepensjonUttakSpecV1:
+      description: ønsket uttak per tjenestepensjonsytelse, dersom man ønsker alle, spesifiseres ALLE som ytelsestype
       type: object
       required:
         - ytelseType
@@ -76,6 +79,7 @@ components:
           format: int32
 
     SimulerTjenestePensjonInntektSpecV1:
+      description: forventet inntekt
       type: object
       required:
         - arligInntekt
@@ -90,6 +94,7 @@ components:
           format: date
 
     SimulerTjenestepensjonResultV1:
+      description: Liste over utbetalinger eller årsak til manglende utbetalinger per ytelse
       type: object
       properties:
         inkludertOrdningListe:
@@ -110,6 +115,8 @@ components:
 
     SimulerTjenestepensjonInkludertOrdningV1:
       type: object
+      required:
+        - tpnr
       properties:
         tpnr:
           description: TP-nummer på ordning
@@ -117,6 +124,11 @@ components:
 
     SimulerTjenestepensjonUtbetalingV1:
       type: object
+      required:
+        - fraOgMedDato
+        - arligUtbetaling
+        - manedligUtbetaling
+        - ytelseType
       properties:
         fraOgMedDato:
           type: string
@@ -132,6 +144,9 @@ components:
 
     SimulerTjenestepensjonStatusV1:
       type: object
+      required:
+        - statusKode
+        - ytelseType
       properties:
         statusKode:
           description: kode som identifiserer type logisk feil, feks vilkårsprøving av AFP Offentlig feilet på reparerbare vilkår
@@ -145,6 +160,7 @@ components:
 
     SimulerTjenestepensjonYtelseTypeV1:
       type: string
+      description: Tjenestepensjonsytelser, ALLE er kun relevant i input
       enum:
         - ALDER
         - SAERALDER
