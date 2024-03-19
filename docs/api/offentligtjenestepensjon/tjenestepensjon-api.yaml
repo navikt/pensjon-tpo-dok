@@ -30,6 +30,12 @@ components:
 
     SimulerTjenestepensjonSpecV1:
       type: object
+      required:
+        - personId
+        - uttaksListe
+        - arIUtlandetEtter16
+        - epsPensjon
+        - eps2G
       properties:
         personId:
           type: string
@@ -54,20 +60,29 @@ components:
 
     SimulerTjenestepensjonUttakSpecV1:
       type: object
+      required:
+        - ytelseType
+        - fraOgMedDato
       properties:
         ytelseType:
           $ref: '#/components/schemas/SimulerTjenestepensjonYtelseTypeV1'
         fraOgMedDato:
+          description: ønsket uttaksdato
           type: string
           format: date
         uttaksgrad:
+          description: kun relevant for ytelser med fleksibelt uttak (for eksempel PAASLAG)
           type: integer
           format: int32
 
     SimulerTjenestePensjonInntektSpecV1:
       type: object
+      required:
+        - arligInntekt
+        - fraOgMedDato
       properties:
         arligInntekt:
+          description: forventet inntekt fra og med gitt dato
           type: integer
           format: int32
         fraOgMedDato:
@@ -78,14 +93,17 @@ components:
       type: object
       properties:
         inkludertOrdningListe:
+          description: List over TP-ordninger inkludert i simuleringen
           type: array
           items:
             $ref: '#/components/schemas/SimulerTjenestepensjonInkludertOrdningV1'
         utbetalingListe:
+          description: Liste over simulert årlig og månedlig utbetaling per ytelse
           type: array
           items:
             $ref: '#/components/schemas/SimulerTjenestepensjonUtbetalingV1'
         arsakIngenUtbetaling:
+          description: Liste av årsaker til at simulert beregning av tjenestepensjon feilet funksjonelt (feks avslag i vilkårsprøving)
           type: array
           items:
             $ref: '#/components/schemas/SimulerTjenestepensjonStatusV1'
@@ -94,6 +112,7 @@ components:
       type: object
       properties:
         tpnr:
+          description: TP-nummer på ordning
           type: string
 
     SimulerTjenestepensjonUtbetalingV1:
@@ -115,11 +134,14 @@ components:
       type: object
       properties:
         statusKode:
+          description: kode som identifiserer type logisk feil, feks vilkårsprøving av AFP Offentlig feilet på reparerbare vilkår
           type: string
         statusBeskrivelse:
+          description: beskrivende tekst om logisk feil
           type: string
         ytelseType:
-            $ref: '#/components/schemas/SimulerTjenestepensjonYtelseTypeV1'
+          $ref: '#/components/schemas/SimulerTjenestepensjonYtelseTypeV1'
+
 
     SimulerTjenestepensjonYtelseTypeV1:
       type: string
@@ -136,5 +158,6 @@ components:
         - OAFP
         - OT6370
         - SAERALDERSPAASLAG
+        - ALLE
 
 
