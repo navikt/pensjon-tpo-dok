@@ -256,12 +256,6 @@ components:
       type: string
       description: Tjenestepensjonsytelser, ALLE er kun relevant i input
       enum:
-        - ALDER
-        - SAERALDER
-        - AFP
-        - UFORE
-        - GJENLEVENDE
-        - BARN
         - PAASLAG
         - APOF2020
         - BTP
