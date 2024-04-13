@@ -6,11 +6,18 @@ info:
 servers:
   - url: https://template.value/template/value
 paths:
-  /api/v1/tjenestepensjon/simuler:
+  /api/v1/tjenestepensjon/simuler/{tpid}:
     post:
       summary: Simuler offentlig tjenestepensjon
       description: Simulerer offentlig tjenestepensjon for brukere født fra og med 1963
       operationId: simuler
+      parameters:
+        - in: path
+          name: tpid
+          description: Tjenestepensjosnummer som identifiserer hvilken tjenestepensjonsordning tjenestepensjonsleverandøren simulerer på vegne av
+          schema:
+            type: string
+            required: true
       requestBody:
         content:
           application/json:
@@ -220,7 +227,6 @@ components:
       type: object
       required:
         - fraOgMedDato
-        - arligUtbetaling
         - manedligUtbetaling
         - ytelseType
       properties:
@@ -228,6 +234,7 @@ components:
           type: string
           format: date
         arligUtbetaling:
+          description: Upåvirket av når uttakstidspunktet er i året eller i forhold til brukers fødselsdag (månedlig beløp multiplisert med 12).
           type: integer
           format: int32
         manedligUtbetaling:

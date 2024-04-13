@@ -19,7 +19,7 @@ Grovt sett kan NAV-kalkulator-prosessen illustreres som følger:
 * Bruker velger ønsket uttakstidpunkt (gradert og/eller helt) og evt uttaksgrad
 * NAV beregner simulert AFP Offentlig (på kort sikt) om bruker spesifiserer at hen har rett til det
 * NAV beregner simulert alderspensjon fra folketrygden
-* NAV finner siste ordning (kall til ny SPK-tjeneste?), og kaller [Simuler Tjenstepensjon](api/offentligtjenestepensjon/tjenestepensjon.html) på siste ordning.
+* NAV finner siste ordning (kall til ny SPK-tjeneste?), og kaller [Simuler Tjenstepensjon](api/offentligtjenestepensjon/v2/tjenestepensjon.html) på siste ordning.
 * Ved simulering av tjenestepensjon gjør TP-ordninger kall tilbake til NAV for å hente nødvendig informasjon avhengig av hvilke tjenestepensjonsytelser som skal simuleres:
     * Ved simulering av AFP:
       * Kall [Hent Simulert AFPBeholdningGrunnlag](https://navikt.github.io/pensjon-ekstern-api/api/afpgrunnlagbeholdning/afp-grunnlag-beholdning.html)
@@ -39,4 +39,10 @@ Grovt sett kan NAV-kalkulator-prosessen illustreres som følger:
 
 Dokumentasjon av APIer som skal tilbys av tjenestepensjonsordninger
 
-* [Offentlig Tjenestepensjon](api/offentligtjenestepensjon/tjenestepensjon.html)
+* [Offentlig Tjenestepensjon V1](api/offentligtjenestepensjon/v1/tjenestepensjon.html)
+  * Beholdes inntil videre siden KLP har startet utvikling basert på denne
+* [Offentlig Tjenestepensjon V2](api/offentligtjenestepensjon/v2/tjenestepensjon.html)
+  * Endringer i V2:
+    * Renamet noen felter for konsistens med andre simuleringstjenester
+    * Endret struktur på utbetalingsliste så den er mer i henhold til tilsvarende tjeneste fra NAV (simuler alderspensjon fra folketrygden)
+    * Fjernet årlig utbetaling

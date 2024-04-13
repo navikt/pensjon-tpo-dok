@@ -1,0 +1,19 @@
+{
+  "personId": "01016312345",
+  "uttaksListe": [
+    {
+      "ytelseType": "AFP",
+      "fraOgMedDato": "2026-01-01",
+      "uttaksgrad": null
+    }
+  ],
+  "fremtidigInntektListe": [
+    {
+      "arligInntekt": 700000,
+      "fraOgMedDato": "2022-01-01"
+    }
+  ],
+  "arIUtlandetEtter16": 0,
+  "epsPensjon": true,
+  "eps2G": true
+}

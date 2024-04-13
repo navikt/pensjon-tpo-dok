@@ -1,0 +1,280 @@
+openapi: 3.0.1
+info:
+  title: Offentlig Tjenestepensjon AP2025
+  description: Inneholder tjenester relatert til offentlig tjenestepensjon for personer født fra og med 1963. Produsent av tjenestene er tjenestepensjonsordninger som SPK, KLP osv.
+  version: 2.0.0
+servers:
+  - url: https://template.value/template/value
+paths:
+  /api/v2/tjenestepensjon/simuler/{tpid}:
+    post:
+      summary: Simuler offentlig tjenestepensjon
+      description: Simulerer offentlig tjenestepensjon for brukere født fra og med 1963
+      operationId: simuler
+      parameters:
+        - in: path
+          name: tpid
+          description: Tjenestepensjosnummer som identifiserer hvilken tjenestepensjonsordning tjenestepensjonsleverandøren simulerer på vegne av
+          schema:
+            type: string
+            required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SimulerTjenestepensjonSpecV2'
+            examples:
+              Simuler AFP:
+                value:
+                  {
+                    "personId": "01016312345",
+                    "uttaksListe": [
+                      {
+                        "ytelseType": "AFP",
+                        "fraOgMedDato": "2026-01-01",
+                        "uttaksgrad": null
+                      }
+                    ],
+                    "fremtidigInntektListe": [
+                      {
+                        "aarligInntekt": 700000,
+                        "fraOgMedDato": "2022-01-01"
+                      }
+                    ],
+                    "aarIUtlandetEtter16": 0,
+                    "epsPensjon": true,
+                    "eps2G": true
+                  }
+              Simuler ALLE:
+                value:
+                  {
+                    "personId": "01016312345",
+                    "uttaksListe": [
+                      {
+                        "ytelseType": "ALLE",
+                        "fraOgMedDato": "2026-01-01",
+                        "uttaksgrad": null
+                      }
+                    ],
+                    "fremtidigInntektListe": [
+                      {
+                        "aarligInntekt": 700000,
+                        "fraOgMedDato": "2022-01-01"
+                      }
+                    ],
+                    "aarIUtlandetEtter16": 0,
+                    "epsPensjon": true,
+                    "eps2G": true
+                  }
+        required: true
+      responses:
+        "200":
+          description: Simulering av offentlig tjenestepensjon utført
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/SimulerTjenestepensjonResultV2'
+              examples:
+                Kun AFP Simulert:
+                  value:
+                    {
+                      "inkludertOrdningListe": [
+                        {
+                          "tpnr": "3020"
+                        }
+                      ],
+                      "utbetalingListe": [
+                        {
+                          "fraOgMedDato": "2026-01-01",
+                          "delytelseListe": [
+                            {
+                              "ytelseType": "AFP",
+                              "maanedligBelop": 5000
+                            }
+                          ]
+                        }
+                      ],
+                      "arsakIngenUtbetaling": null
+                    }
+                PAASLAG og APOF2020 simulert, ikke rett til AFP:
+                  value:
+                    {
+                      "inkludertOrdningListe": [
+                        {
+                          "tpnr": "3020"
+                        }
+                      ],
+                      "utbetalingListe": [
+                        {
+                          "fraOgMedDato": "2026-01-01",
+                          "delytelseListe": [
+                            {
+                              "ytelseType": "PAASLAG",
+                              "maanedligBelop": 1000
+                            },
+                            {
+                              "ytelseType": "APOF2020",
+                              "maanedligBelop": 10000
+                            }
+                          ]
+                        }
+                      ],
+                      "aarsakIngenUtbetaling": [
+                        {
+                          "statusKode": "7_AV_9_AAR_IKKE_OPPFYLT",
+                          "statusBeskrivelse": "Bruker har ikke jobbet i AFP-bedrift minst 7 av de siste 9 år før 62 år",
+                          "ytelseType": "AFP"
+                        }
+                      ]
+                    }
+
+components:
+  schemas:
+
+    SimulerTjenestepensjonSpecV2:
+      description: Input til tjenesten
+      type: object
+      required:
+        - personId
+        - uttaksListe
+        - aarIUtlandetEtter16
+        - epsPensjon
+        - eps2G
+      properties:
+        personId:
+          type: string
+        uttaksListe:
+          type: array
+          items:
+            $ref: '#/components/schemas/SimulerTjenestepensjonUttakSpecV2'
+          example:
+
+        fremtidigInntektListe:
+          description: Liste over brukerangitt forventet inntekt som typisk skal brukes i kall tilbake til NAV for å hente simulert AFP-beholdnning-grunnlag (for beregning av simulert AFP) og simulert folketrygdbeholdning (for beregning av APOF2020)
+          type: array
+          items:
+            $ref: '#/components/schemas/SimulerTjenestePensjonInntektSpecV2'
+        arIUtlandetEtter16:
+          description: Antall år i utlandet etter 16, skal brukes for å kunne kalle tilbake til NAV for å få simulert folketrygdbeholdning for beregning av APOF2020
+          type: integer
+          format: int32
+        epsPensjon:
+          description: Om ektefelle/partner/samboer har alderspensjon, skal brukes for å kunne kalle tilbake til NAV for å få simulert folketrygdbeholdning for beregning av APOF2020
+          type: boolean
+        eps2G:
+          description: Om ektefelle/partner/samboer har pensjonsgivende inntekt over 2G, skal brukes for å kunne kalle tilbake til NAV for å få simulert folketrygdbeholdning for beregning av APOF2020
+          type: boolean
+
+    SimulerTjenestepensjonUttakSpecV2:
+      description: ønsket uttak per tjenestepensjonsytelse, dersom man ønsker alle, spesifiseres ALLE som ytelsestype
+      type: object
+      required:
+        - ytelseType
+        - fraOgMedDato
+      properties:
+        ytelseType:
+          $ref: '#/components/schemas/SimulerTjenestepensjonYtelseTypeV2'
+        fraOgMedDato:
+          description: ønsket uttaksdato
+          type: string
+          format: date
+        uttaksgrad:
+          description: kun relevant for ytelser med fleksibelt uttak (for eksempel PAASLAG)
+          type: integer
+          format: int32
+
+    SimulerTjenestePensjonInntektSpecV2:
+      description: forventet inntekt
+      type: object
+      required:
+        - aarligInntekt
+        - fraOgMedDato
+      properties:
+        aarligInntekt:
+          description: forventet inntekt fra og med gitt dato
+          type: integer
+          format: int32
+        fraOgMedDato:
+          type: string
+          format: date
+
+    SimulerTjenestepensjonResultV2:
+      description: Liste over utbetalinger eller årsak til manglende utbetalinger per ytelse
+      type: object
+      properties:
+        inkludertOrdningListe:
+          description: List over TP-ordninger inkludert i simuleringen
+          type: array
+          items:
+            $ref: '#/components/schemas/SimulerTjenestepensjonInkludertOrdningV2'
+        utbetalingListe:
+          description: Liste over simulert årlig og månedlig utbetaling per ytelse
+          type: array
+          items:
+            $ref: '#/components/schemas/SimulerTjenestepensjonUtbetalingV2'
+        aarsakIngenUtbetaling:
+          description: Liste av årsaker til at simulert beregning av tjenestepensjon feilet funksjonelt (feks avslag i vilkårsprøving)
+          type: array
+          items:
+            $ref: '#/components/schemas/SimulerTjenestepensjonStatusV2'
+
+    SimulerTjenestepensjonInkludertOrdningV2:
+      type: object
+      required:
+        - tpnr
+      properties:
+        tpnr:
+          description: TP-nummer på ordning
+          type: string
+
+    SimulerTjenestepensjonUtbetalingV2:
+      type: object
+      required:
+        - fraOgMedDato
+        - maanedligBelop
+        - ytelseType
+      properties:
+        fraOgMedDato:
+          type: string
+          format: date
+        delytelseListe:
+          $ref: '#/components/schemas/SimulerTjenestepensjonDelytelseV2'
+
+    SimulerTjenestepensjonStatusV2:
+      type: object
+      required:
+        - statusKode
+        - ytelseType
+      properties:
+        statusKode:
+          description: kode som identifiserer type logisk feil, feks vilkårsprøving av AFP Offentlig feilet på reparerbare vilkår.
+          type: string
+        statusBeskrivelse:
+          description: beskrivende tekst om logisk feil
+          type: string
+        ytelseType:
+          $ref: '#/components/schemas/SimulerTjenestepensjonYtelseTypeV2'
+
+
+    SimulerTjenestepensjonYtelseTypeV2:
+      type: string
+      description: Tjenestepensjonsytelser, ALLE er kun relevant i input
+      enum:
+        - PAASLAG
+        - APOF2020
+        - BTP
+        - OAFP
+        - OT6370
+        - SAERALDERSPAASLAG
+        - ALLE
+
+    SimulerTjenestepensjonDelytelseV2:
+      type: object
+      properties:
+        ytelseType:
+          $ref: '#/components/schemas/SimulerTjenestepensjonYtelseTypeV2'
+        maanedligBelop:
+          type: integer
+          format: int32
+
+

@@ -1,0 +1,28 @@
+{
+  "inkludertOrdningListe": [
+    {
+      "tpnr": "3020"
+    }
+  ],
+  "utbetalingListe": [
+    {
+      "fraOgMedDato": "2026-01-01",
+      "arligUtbetaling": 12000,
+      "manedligUtbetaling": 1000,
+      "ytelseType": "PAASLAG"
+    },
+    {
+      "fraOgMedDato": "2026-01-01",
+      "arligUtbetaling": 120000,
+      "manedligUtbetaling": 10000,
+      "ytelseType": "APOF2020"
+    }
+  ],
+  "arsakIngenUtbetaling": [
+    {
+      "statusKode": "7_AV_9_AAR_IKKE_OPPFYLT",
+      "statusBeskrivelse": "Bruker har ikke jobbet i AFP-bedrift minst 7 av de siste 9 år før 62 år",
+      "ytelseType": "AFP"
+    }
+  ]
+}
