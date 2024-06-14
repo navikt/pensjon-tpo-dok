@@ -203,7 +203,7 @@ components:
       type: object
       properties:
         inkludertOrdningListe:
-          description: List over TP-ordninger inkludert i simuleringen
+          description: Liste over TP-ordninger inkludert i simuleringen, inkluderer også TP-ordning som utfører simuleringen
           type: array
           items:
             $ref: '#/components/schemas/SimulerTjenestepensjonInkludertOrdningV2'
