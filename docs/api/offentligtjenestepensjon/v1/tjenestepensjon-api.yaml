@@ -68,7 +68,7 @@ paths:
                   }
         required: true
       responses:
-        "200":
+        200:
           description: Simulering av offentlig tjenestepensjon utført
           content:
             '*/*':
@@ -123,6 +123,24 @@ paths:
                         }
                       ]
                     }
+                Simulering ikke mulig (feks forespørsel på medlem født før 1963):
+                  value:
+                    {
+                      "inkludertOrdningListe": [
+                      ],
+                      "utbetalingListe": [
+                      ],
+                      "aarsakIngenUtbetaling": [
+                      ]
+                    }
+        400:
+          description: Feil i request-data fra klient
+        401:
+          description: Autentisering feilet
+        403:
+          description: Autorisering til ressurs feilet, feks feil scope i token
+        500:
+          description: Intern server-feil, feks baksystemer nede, nullpointerexception
 
 components:
   schemas:

@@ -68,8 +68,8 @@ paths:
                   }
         required: true
       responses:
-        "200":
-          description: Simulering av offentlig tjenestepensjon utført
+        200:
+          description: Simulering av offentlig tjenestepensjon utført. Ved forespørsel som fører til at simulering totalt sett ikke er mulig (feks spør om simulering for en person født før 1963), vil http status 200 returneres, men med tomme lister i response.
           content:
             '*/*':
               schema:
@@ -127,7 +127,24 @@ paths:
                         }
                       ]
                     }
-
+                Simulering ikke mulig (feks forespørsel på medlem født før 1963):
+                  value:
+                    {
+                      "inkludertOrdningListe": [
+                      ],
+                      "utbetalingListe": [
+                      ],
+                      "aarsakIngenUtbetaling": [
+                      ]
+                    }
+        400:
+          description: Feil i request-data fra klient
+        401:
+          description: Autentisering feilet
+        403:
+          description: Autorisering til ressurs feilet, feks feil scope i token
+        500:
+          description: Intern server-feil, feks baksystemer nede, nullpointerexception
 components:
   schemas:
 
