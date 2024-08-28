@@ -30,7 +30,7 @@ paths:
                     "personId": "01016312345",
                     "uttaksListe": [
                       {
-                        "ytelseType": "AFP",
+                        "ytelseType": "OAFP",
                         "fraOgMedDato": "2026-01-01",
                         "uttaksgrad": null
                       }
@@ -88,7 +88,7 @@ paths:
                           "fraOgMedDato": "2026-01-01",
                           "arligUtbetaling": 60000,
                           "manedligUtbetaling": 5000,
-                          "ytelseType": "AFP"
+                          "ytelseType": "OAFP"
                         }
                       ],
                       "arsakIngenUtbetaling": null
@@ -119,7 +119,7 @@ paths:
                         {
                           "statusKode": "7_AV_9_AAR_IKKE_OPPFYLT",
                           "statusBeskrivelse": "Bruker har ikke jobbet i AFP-bedrift minst 7 av de siste 9 år før 62 år",
-                          "ytelseType": "AFP"
+                          "ytelseType": "OAFP"
                         }
                       ]
                     }
