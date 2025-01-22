@@ -69,7 +69,22 @@ paths:
         required: true
       responses:
         200:
-          description: Simulering av offentlig tjenestepensjon utført
+          description: |
+            Simulering av offentlig tjenestepensjon utført.
+            
+            Utbetalingslisten vil være tom dersom:
+            - Medlemmet har en aktiv AP2025 hos en annen TP leverandør
+            - Medlemmet er født før 1963
+            - Forespurt TP nummer ikke er siste ordning
+            - Ingen av ytelsene oppfyller kravene under
+            
+            Og man får returnert en ytelse i utbetalingslisten dersom:
+            - Det er en ytelsetype TP-ordning støtter (per nå ikke særalderspåslag og overgangstillegg)
+            - Den oppfyller vilkårene
+            - Den kan kalkuleres / TP-ordning har klart å hente nødvendige data for å kunne kalkulere
+            - Ytelsen ikke allerede er aktiv
+            
+            TP-ordning vil returnere noe annet enn 200 OK dersom man ikke har klart å hente enkelte essensielle data.
           content:
             '*/*':
               schema:
