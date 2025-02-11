@@ -75,7 +75,7 @@ paths:
             Utbetalingslisten vil være tom dersom:
             - Medlemmet har en aktiv AP2025 hos en annen TP leverandør
             - Medlemmet er født før 1963
-            - Forespurt TP nummer ikke er siste ordning
+            - Forespurt TP nummer ikke er siste ordning (i dette tilfelle vil det også returneres et element i listen arsakIkkeUtbetaling med statusKode "IKKE_SISTE_ORDNING" og ytelseType "ALLE")
             - Ingen av ytelsene oppfyller kravene under
             
             Og man får returnert en ytelse i utbetalingslisten dersom:
@@ -135,6 +135,19 @@ paths:
                           "statusKode": "7_AV_9_AAR_IKKE_OPPFYLT",
                           "statusBeskrivelse": "Bruker har ikke jobbet i AFP-bedrift minst 7 av de siste 9 år før 62 år",
                           "ytelseType": "OAFP"
+                        }
+                      ]
+                    }
+                Ikke siste ordning:
+                  value:
+                    {
+                      "inkludertOrdningListe": [],
+                      "utbetalingListe": [],
+                      "aarsakIngenUtbetaling": [
+                        {
+                          "statusKode": "IKKE_SISTE_ORDNING",
+                          "statusBeskrivelse": "Vi er ikke siste ordning",
+                          "ytelseType": "ALLE"
                         }
                       ]
                     }
@@ -283,7 +296,12 @@ components:
         - ytelseType
       properties:
         statusKode:
-          description: kode som identifiserer type logisk feil, feks vilkårsprøving av AFP Offentlig feilet på reparerbare vilkår
+          description: | 
+            Kode som identifiserer type logisk feil, feks vilkårsprøving av AFP Offentlig feilet på reparerbare vilkår.
+            
+            Egne feilkoder dersom dette ikke er siste ordning, evt siste ordning ikke er avklart:
+              - IKKE_SISTE_ORDNING
+              - SISTE_ORDNING_IKKE_AVKLART
           type: string
         statusBeskrivelse:
           description: beskrivende tekst om logisk feil
@@ -294,7 +312,7 @@ components:
 
     SimulerTjenestepensjonYtelseTypeV1:
       type: string
-      description: Tjenestepensjonsytelser, ALLE er kun relevant i input
+      description: Tjenestepensjonsytelser, type "ALLE" vil returneres når tjenesteordning ikke er siste ordning, eller siste ordning ikke er avklart
       enum:
         - PAASLAG
         - APOF2020
