@@ -69,7 +69,12 @@ paths:
         required: true
       responses:
         200:
-          description: Simulering av offentlig tjenestepensjon utført. Ved forespørsel som fører til at simulering totalt sett ikke er mulig (feks spør om simulering for en person født før 1963), vil http status 200 returneres, men med tomme lister i response.
+          description: |
+            Simulering av offentlig tjenestepensjon utført. 
+            
+            Ved forespørsel som fører til at simulering totalt sett ikke er mulig (feks spør om simulering for en person født før 1963), vil http status 200 returneres, men med tomme lister i response.
+            
+            Dersom tjenestepensjonsordning ikke er siste ordning (evt siste ordning ikke er avklart), vil http status 200 returneres med tomme lister, bortsett fra listen arsakIngenUtbetaling, som da vil inneholde et element der statusKode er strengen "IKKE_SISTE_ORDNING" (evt "SISTE_ORDNING_IKKE_AVKLART" og ytelsesType "ALLE"
           content:
             '*/*':
               schema:
@@ -124,6 +129,19 @@ paths:
                           "statusKode": "7_AV_9_AAR_IKKE_OPPFYLT",
                           "statusBeskrivelse": "Bruker har ikke jobbet i AFP-bedrift minst 7 av de siste 9 år før 62 år",
                           "ytelseType": "OAFP"
+                        }
+                      ]
+                    }
+                Ikke siste ordning:
+                  value:
+                    {
+                      "inkludertOrdningListe": [],
+                      "utbetalingListe": [],
+                      "aarsakIngenUtbetaling": [
+                        {
+                          "statusKode": "IKKE_SISTE_ORDNING",
+                          "statusBeskrivelse": "Vi er ikke siste ordning",
+                          "ytelseType": "ALLE"
                         }
                       ]
                     }
@@ -230,7 +248,7 @@ components:
           items:
             $ref: '#/components/schemas/SimulerTjenestepensjonUtbetalingV2'
         aarsakIngenUtbetaling:
-          description: Liste av årsaker til at simulert beregning av tjenestepensjon feilet funksjonelt (feks avslag i vilkårsprøving)
+          description: Liste av årsaker til at simulert beregning av tjenestepensjon feilet funksjonelt (feks avslag i vilkårsprøving, ikke siste ordning/siste ordning ikke avklart)
           type: array
           items:
             $ref: '#/components/schemas/SimulerTjenestepensjonStatusV2'
@@ -264,7 +282,12 @@ components:
         - ytelseType
       properties:
         statusKode:
-          description: kode som identifiserer type logisk feil, feks vilkårsprøving av AFP Offentlig feilet på reparerbare vilkår.
+          description: |
+            Kode som identifiserer type logisk feil, feks vilkårsprøving av AFP Offentlig feilet på reparerbare vilkår.
+            
+            Egne feilkoder dersom dette ikke er siste ordning, evt siste ordning ikke er avklart:
+            - IKKE_SISTE_ORDNING
+            - SISTE_ORDNING_IKKE_AVKLART
           type: string
         statusBeskrivelse:
           description: beskrivende tekst om logisk feil
@@ -275,7 +298,7 @@ components:
 
     SimulerTjenestepensjonYtelseTypeV2:
       type: string
-      description: Tjenestepensjonsytelser, ALLE er kun relevant i input
+      description: Tjenestepensjonsytelser, type "ALLE" vil returneres når tjenesteordning ikke er siste ordning, eller siste ordning ikke er avklart
       enum:
         - PAASLAG
         - APOF2020
